@@ -48,7 +48,7 @@ def download_in_parallel(df, output_dir, num_threads):
     pool.close()
     pool.join()
 
-def main(num_threads):
+def main(num_threads, data_path):
     urls = {
         "archaea": "https://ftp.ncbi.nlm.nih.gov/genomes/refseq/archaea/assembly_summary.txt",
         "bacteria": "https://ftp.ncbi.nlm.nih.gov/genomes/refseq/bacteria/assembly_summary.txt",
@@ -57,7 +57,6 @@ def main(num_threads):
         "human": "https://ftp.ncbi.nlm.nih.gov/genomes/refseq/vertebrate_mammalian/Homo_sapiens/assembly_summary.txt"
     }
 
-    data_path = "/ibex/user/salhia/RefSeq"
     os.makedirs(data_path, exist_ok=True)
     os.chdir(data_path)
 
@@ -80,8 +79,17 @@ def main(num_threads):
         df_split = np.array_split(df, size)[rank]
         download_in_parallel(df_split, f"{domain}_genomes", num_threads)
 
+
 if __name__ == "__main__":
     import sys
-    num_threads = int(sys.argv[1]) if len(sys.argv) > 1 else 10
-    main(num_threads)
+
+    if len(sys.argv) < 3:
+        print("Error: Missing required arguments.\nUsage: python parallel_download.py <num_threads> <data_path>")
+        sys.exit(1)
+
+    num_threads = int(sys.argv[1])
+    data_path = sys.argv[2]
+
+    main(num_threads, data_path)
+
 

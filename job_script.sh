@@ -10,6 +10,6 @@
 
 
 
-srun python3 parallel_download.py 20 
+srun python3 parallel_download.py 20 /download/destination/path 
 
 
