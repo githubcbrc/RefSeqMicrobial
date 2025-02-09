@@ -24,7 +24,6 @@ def download_assembly_summary(url, output_filename):
 
 def download_genome(ftp_url, output_dir):
     """Download genome file if it doesn't already exist."""
-    filename = os.path.basename(ftp_url) + "_genomic.fna.gz"
     output_path = os.path.join(output_dir, filename)
 
     if os.path.exists(output_path):
